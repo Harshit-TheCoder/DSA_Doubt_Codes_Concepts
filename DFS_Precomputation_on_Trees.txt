@@ -1,0 +1,162 @@
+Cut the Tree - Simple DFS Pre-computation [Python/C++/Java]
+Ever feel like some tree problems are just trying to stump you? This is one of them! The idea of trying every pair of cuts seems like a nightmare. But what if we could do some prep work to make the actual cutting part a piece of cake? That's exactly what we'll do. Let's dive in!
+
+Intuition
+The brute-force approach of removing two edges, finding the three components using BFS/DFS each time, and calculating their XORs would be way too slow (O(N^3) or worse). The number of nodes is up to 1000, so N^2 is our target.
+
+The key insight is that the structure of the components is always the same relative to the cuts. When we cut an edge, we sever a subtree from the rest of the tree. If we could instantly know the XOR sum of any subtree, we could solve this much faster.
+
+This leads to a two-phase strategy:
+
+Pre-computation Phase: Go through the tree once and calculate the XOR sum for every possible subtree. We'll use a single Depth First Search (DFS) for this. While we're at it, we'll also figure out which nodes belong to which subtree (the descendants).
+Calculation Phase: Iterate through all valid pairs of edges to cut. Using our pre-computed data, we can find the XOR sums of the three resulting components in constant O(1) time.
+Think of it like cooking: instead of running to the store for each ingredient while making a dish, we get everything ready on the counter first. Our DFS is the prep work!
+
+Approach
+Our game plan is straightforward:
+
+Build the Graph: Convert the edges list into an adjacency list, which is perfect for tree traversals.
+
+DFS Pre-computation: We'll run a single DFS from a root (let's pick node 0). This DFS will have a "post-order" nature, meaning we process a node's children before finalizing the calculations for the node itself. For each node, our DFS will compute:
+
+subtree_xor[node]: The XOR sum of all node values in the subtree rooted at node.
+descendants[node]: A set containing all nodes that are descendants of node (including the node itself).
+Iterate Through All Cuts: After the DFS, we have all the info we need. We can simulate cutting any two edges by picking two nodes, i and j, and considering the edges that connect them to their parents. For every pair of nodes (i, j) (where i != j and neither is the root), there are three geometric scenarios for how their subtrees are related.
+
+Scenarios for a Pair of Cuts
+For any two nodes i and j (which represent the tops of the subtrees being cut off), the relationship between their subtrees falls into one of three categories:
+
+Nested (j is a descendant of i): One cut is inside the other's subtree. The three components formed are:
+
+The inner subtree rooted at j.
+The "donut-shaped" part: subtree(i) excluding subtree(j).
+The rest of the tree: total_tree excluding subtree(i).
+Nested (i is a descendant of j): This is the same as the first case, just with the roles of i and j swapped.
+
+Independent: The two subtrees are in completely separate branches of the main tree. The three components formed are:
+
+The subtree rooted at i.
+The subtree rooted at j.
+The rest of the tree.
+The key is that for each of these scenarios, the XOR values of the three components can be found in constant time using the pre-calculated subtree_xor and total_xor values.
+
+Walkthrough with an Example
+Let's use nums = [1,5,5,4,11] and edges = [[0,1],[1,2],[1,3],[3,4]].
+The tree looks like this:
+
+image.png
+
+Our DFS starts at 0. It goes down to 1, then 2.
+
+Node 2: It's a leaf. subtree_xor[2] = nums[2] = 5. descendants[2] = {2}.
+Node 1: It looks at child 2. Now it goes to child 3.
+Node 3: It looks at child 4.
+Node 4: It's a leaf. subtree_xor[4] = nums[4] = 11. descendants[4] = {4}.
+Node 3 (return): It has processed child 4. It calculates its values:
+subtree_xor[3] = nums[3] ^ subtree_xor[4] = 4 ^ 11 = 15.
+descendants[3] = {3} U descendants[4] = {3, 4}.
+Node 1 (return): It has processed children 2 and 3. It calculates its values:
+subtree_xor[1] = nums[1] ^ subtree_xor[2] ^ subtree_xor[3] = 5 ^ 5 ^ 15 = 15.
+descendants[1] = {1} U descendants[2] U descendants[3] = {1, 2, 3, 4}.
+Node 0 (return): It has processed child 1.
+subtree_xor[0] = nums[0] ^ subtree_xor[1] = 1 ^ 15 = 14. This is our total_xor.
+Now, let's analyze cutting the edges (1,3) and (0,1). This is equivalent to picking nodes i=3 and j=1.
+
+Cut 1 (Node i=3): We sever the subtree at node 3. Its XOR sum is subtree_xor[3] = 15.
+Cut 2 (Node j=1): We sever the subtree at node 1. Its XOR sum is subtree_xor[1] = 15.
+Wait, i=3 is a descendant of j=1! This is a nested cut.
+
+Component 1 (Innermost): The subtree of 3. XOR = subtree_xor[3] = 15.
+Component 2 (Middle "donut"): The subtree of 1 minus the subtree of 3. XOR = subtree_xor[1] ^ subtree_xor[3] = 15 ^ 15 = 0.
+Component 3 (Outermost): The rest of the tree. XOR = total_xor ^ subtree_xor[1] = 14 ^ 15 = 1.
+The score is max(15, 0, 1) - min(15, 0, 1) = 15 - 0 = 15. The algorithm does this for all pairs to find the minimum. For the pair that gives the answer 9, the components are 10, 1, 5.
+
+The three scenarios for any two nodes i and j are:
+
+j is a descendant of i (Nested): Components are subtree(j), subtree(i) - subtree(j), and total - subtree(i).
+i is a descendant of j (Nested): Components are subtree(i), subtree(j) - subtree(i), and total - subtree(j).
+Independent: Components are subtree(i), subtree(j), and total - subtree(i) - subtree(j).
+We can check these relationships in O(1) using our pre-computed descendants sets.
+
+Complexity
+Time complexity: O(N^2)
+
+Building the graph takes O(N).
+The single DFS traversal takes O(N) because we visit each node and edge once.
+The main part is the nested loop that iterates through all pairs of nodes (i, j) to simulate the cuts. This is O(N^2). Inside the loop, all calculations are O(1).
+Total: O(N) + O(N) + O(N^2) = O(N^2).
+Space complexity: O(N^2)
+
+The graph takes O(N) space.
+The subtree_xor array takes O(N) space.
+The descendants list of sets is the main consumer. In the worst case (a star graph where one node is connected to all others), the set for the root node will contain N-1 elements. Since there are N such sets, the space can be up to O(N^2) in the worst case. For a balanced tree, it would be closer to O(N log N)
+
+class Solution {
+    int[] nums;
+    ArrayList<ArrayList<Integer>> tree;
+    int[] xorSubtree;
+    int[] inTime, outTime;
+    int time = 0;
+    int totalXor;
+
+    public int minimumScore(int[] nums, int[][] edges) {
+        this.nums = nums;
+        int n = nums.length;
+        tree = new ArrayList<>();
+        for (int i = 0; i < n; i++) tree.add(new ArrayList<>());
+        for (int[] edge : edges) {
+            tree.get(edge[0]).add(edge[1]);
+            tree.get(edge[1]).add(edge[0]);
+        }
+
+        xorSubtree = new int[n];
+        inTime = new int[n];
+        outTime = new int[n];
+
+        totalXor = dfs(0, -1); // Root at 0
+
+        int minDiff = Integer.MAX_VALUE;
+
+        // Try all pairs of nodes u and v (representing subtrees of removed edges)
+        for (int u = 1; u < n; u++) {
+            for (int v = u + 1; v < n; v++) {
+                int a = xorSubtree[u];
+                int b = xorSubtree[v];
+                int c = totalXor ^ a ^ b;
+
+                if (isAncestor(u, v)) {
+                    a = xorSubtree[u] ^ xorSubtree[v];
+                    b = xorSubtree[v];
+                    c = totalXor ^ xorSubtree[u];
+                } else if (isAncestor(v, u)) {
+                    a = xorSubtree[v] ^ xorSubtree[u];
+                    b = xorSubtree[u];
+                    c = totalXor ^ xorSubtree[v];
+                }
+
+                int max = Math.max(a, Math.max(b, c));
+                int min = Math.min(a, Math.min(b, c));
+                minDiff = Math.min(minDiff, max - min);
+            }
+        }
+
+        return minDiff;
+    }
+
+    int dfs(int node, int parent) {
+        inTime[node] = ++time;
+        int xor = nums[node];
+        for (int child : tree.get(node)) {
+            if (child != parent) {
+                xor ^= dfs(child, node);
+            }
+        }
+        outTime[node] = ++time;
+        xorSubtree[node] = xor;
+        return xor;
+    }
+
+    boolean isAncestor(int u, int v) {
+        return inTime[u] <= inTime[v] && outTime[v] <= outTime[u];
+    }
+}
