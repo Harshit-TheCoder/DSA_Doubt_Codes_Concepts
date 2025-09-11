@@ -1,0 +1,155 @@
+Problem Overview – What's Going On?
+You’re given a list of folder paths where each path is an array of strings (representing folders).
+Your task is to identify all folders that are structurally identical, even if they’re at different locations in the file system — and delete them and their entire subtrees.
+
+Example:
+
+Paths = [
+  ["a"], ["a", "x"], ["a", "x", "y"], ["a", "z"],
+  ["b"], ["b", "x"], ["b", "x", "y"], ["b", "z"]
+]
+Both /a and /b have the exact same subfolder structure. Therefore, delete both completely.
+
+🔍 What Is a Duplicate Folder Structure?
+A folder structure is not considered duplicate based on folder name alone. Instead, it’s considered duplicate if and only if:
+
+"The set of child folders and their subfolders are identical in structure and names."
+
+For example:
+
+/a        ↳ x       ↳ y
+          ↳ z
+
+/b        ↳ x       ↳ y
+          ↳ z
+✅ Same child structure → considered duplicates → deleted.
+Now consider:
+
+/a        ↳ b       ↳ c
+
+/d        ↳ b       ↳ d
+Even though both /a/b and /d/b exist — they are not structurally identical → ❌ not deleted.
+
+🧠 Step-by-Step Solution Explained
+✅ Step 1: Build the File Tree (Like a Trie)
+We represent the filesystem using a custom tree node structure, where each folder is a node.
+
+Each node stores:
+
+Folder name
+
+A TreeMap of children (to ensure consistent order during serialization)
+
+A string signature to uniquely represent its subtree structure
+
+We build the tree by:
+
+Inserting each path one by one.
+
+Creating nodes if they don’t exist.
+
+This gives us a full tree of the filesystem.
+
+🧬 Step 2: Serialize Each Subtree to Detect Duplicates
+We now perform post-order DFS (children first) to compute a signature for each subtree.
+
+Example Signature:
+
+For structure:
+  "b" ↳ "c"
+  "d"
+Signature of "b" = b(c())
+Signature of root = a(b(c())d())
+
+This uniquely identifies the structure. If two nodes generate the same signature, then they’re identical folders.
+
+We keep a Map<String, Integer> to count how many times each signature appears.
+
+❌ Step 3: Second DFS to Delete Duplicates
+Now we traverse the tree again:
+
+For each node, if its signature occurs more than once, we skip that node and its children (i.e., delete it).
+Otherwise, we record the full path and continue traversal.
+This ensures that all duplicates and their subfolders are removed, and only unique paths remain.
+
+
+class Solution {
+    class Trie {
+        class Node {
+            Map<String, Node> links = new HashMap<>();
+            boolean isEnd = false, toDelete = false;
+            String value = "";
+            String serial = "";
+        }
+
+        Node root = new Node();
+        Map<String, Integer> serialCount = new HashMap<>();
+
+        void insert(List<String> path) {
+            Node node = root;
+            for (String folder : path) {
+                node.links.putIfAbsent(folder, new Node());
+                node = node.links.get(folder);
+                node.value = folder;
+            }
+            node.isEnd = true;
+        }
+
+        String serialize(Node node) {
+            if (node.links.isEmpty()) {
+                node.serial = "";
+                return "";
+            }
+
+            List<String> parts = new ArrayList<>();
+            for (Map.Entry<String, Node> entry : node.links.entrySet()) {
+                String serialized = "(" + entry.getKey() + serialize(entry.getValue()) + ")";
+                parts.add(serialized);
+            }
+
+            Collections.sort(parts);
+            String hash = String.join("", parts);
+            serialCount.put(hash, serialCount.getOrDefault(hash, 0) + 1);
+            node.serial = hash;
+            return hash;
+        }
+
+        void mark(Node node) {
+            if (serialCount.getOrDefault(node.serial, 0) > 1) {
+                node.toDelete = true;
+            }
+
+            for (Node child : node.links.values()) {
+                mark(child);
+            }
+        }
+
+        void collectPaths(Node node, List<String> currPath, List<List<String>> result) {
+            if (node != root && node.isEnd && !node.toDelete) {
+                result.add(new ArrayList<>(currPath));
+            }
+
+            for (Map.Entry<String, Node> entry : node.links.entrySet()) {
+                if (!entry.getValue().toDelete) {
+                    currPath.add(entry.getKey());
+                    collectPaths(entry.getValue(), currPath, result);
+                    currPath.remove(currPath.size() - 1);
+                }
+            }
+        }
+    }
+
+    public List<List<String>> deleteDuplicateFolder(List<List<String>> paths) {
+        Trie trie = new Trie();
+        for (List<String> path : paths) {
+            trie.insert(path);
+        }
+
+        trie.serialize(trie.root);
+        trie.mark(trie.root);
+
+        List<List<String>> result = new ArrayList<>();
+        trie.collectPaths(trie.root, new ArrayList<>(), result);
+        return result;
+    }
+}

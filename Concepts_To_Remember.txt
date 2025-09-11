@@ -1,0 +1,11 @@
+# An Odd Number has divisors all of which are odd.
+
+# To break a number in 'k' parts of different powers of 2, i.e, num = 2^a + 2^b + 2^c + .... k times EXACTLY,
+    it is possible only if number of set bits in num <= k <= num
+
+# In terms of bits, a number num always lies between [ b^k , b^(k+1) -1 ]
+    Eg, if base is 4 then [4^0, 4^(0+1) - 1] -> 0 - 3
+                          [4^1, 4^(1+1) - 1] -> 4 - 15
+                          [4^2, 4^(2+1) - 1] -> 16 - 63 and so on
+
+
