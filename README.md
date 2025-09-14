@@ -53,7 +53,13 @@
 ### If there are two arrays and an inuequality given or some relation to relate two arrays, always combine the two arrays
      together using the inequality
 
-### SOS DP ARRAY 
+### Difference Array Concept
+    For range updates, we can use difference arrays to precalculate the range in O(n) time.
+    int diff[] = new int[n]
+    diff[l] += 1, diff[r+1] -= -1
+
+
+    
     
 
 
