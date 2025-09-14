@@ -1,14 +1,14 @@
-# An Odd Number has divisors all of which are odd.
+### An Odd Number has divisors all of which are odd.
 
-# To break a number in 'k' parts of different powers of 2, i.e, num = 2^a + 2^b + 2^c + .... k times EXACTLY,
+### To break a number in 'k' parts of different powers of 2, i.e, num = 2^a + 2^b + 2^c + .... k times EXACTLY,
     it is possible only if number of set bits in num <= k <= num
 
-# In terms of bits, a number num always lies between [ b^k , b^(k+1) -1 ]
+### In terms of bits, a number num always lies between [ b^k , b^(k+1) -1 ]
     Eg, if base is 4 then [4^0, 4^(0+1) - 1] -> 0 - 3
                           [4^1, 4^(1+1) - 1] -> 4 - 15
                           [4^2, 4^(2+1) - 1] -> 16 - 63 and so on
 
-# XOR Basis Trick (Short Form)
+### XOR Basis Trick (Short Form)
     Purpose
     Represent all subset XORs compactly.
     Answer queries like max subset XOR, kth subset XOR, representability.
@@ -50,10 +50,10 @@
     int ans = 0;
     for(int i=31;i>=0;i--) ans = Math.max(ans, ans^basis[i]);
 
-# If there are two arrays and an inuequality given or some relation to relate two arrays, always combine the two arrays
+### If there are two arrays and an inuequality given or some relation to relate two arrays, always combine the two arrays
      together using the inequality
 
-# SOS DP ARRAY 
+### SOS DP ARRAY 
     
 
 
