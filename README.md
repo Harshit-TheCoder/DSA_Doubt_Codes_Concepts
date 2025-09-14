@@ -50,8 +50,8 @@
     int ans = 0;
     for(int i=31;i>=0;i--) ans = Math.max(ans, ans^basis[i]);
 
-### If there are two arrays and an inuequality given or some relation to relate two arrays, always combine the two arrays
-     together using the inequality
+### If there are two arrays and an inuequality given or some relation to relate two arrays
+     always combine the two arrays together using the inequality
 
 ### Difference Array Concept
     For range updates, we can use difference arrays to precalculate the range in O(n) time.
