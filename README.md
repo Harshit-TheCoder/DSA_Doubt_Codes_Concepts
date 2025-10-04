@@ -90,6 +90,36 @@
 ### Find number of rectangles in binary matrix
     Start from top to bottom.
     At each level count height of histograms and count the rectangles using monotonic stack
+
+### If there is a question, which has an array [ (l1, r1), (l2, r2) .... (ln ,rn) ] that is dealing with segments, always try focussing on intersection of segments and make use of difference array or difference map to handle segments effectively
+
+### If we have to deal with trailing zeroes in a number, always think in power of 2's and 5's because number of trailing zeroes = Math.min(count(2), count(5)). If we have to multiply a given number of any number k <= m to maximise trailing zeroes, find out number of 2's and 5's in that number and multiply both that count(2) = count(5) equal in input number. then multiply by 10 till k*10 > m and then multiply m/k to maximize input.
+
+### to make [p,q,r,s,t,u,v,w] -> [a,a,a,a,a,a,a,a] by adding remainder of number % 10, 
+	0 -> 0
+	1 -> 1,        2,4,8,6 now cycle
+	2 ->           2,4,8,6 now cycle
+	3 -> 3,6,      2,4,8,6 now cycle
+	4 -> 4,8,6,    2,4,8,6 now cycle
+	5 -> 5,0
+	6 -> 6,        2,4,8,6 now cycle
+	7 -> 7,4,8,6,  2,4,8,6 now cycle
+	8 -> 8,6       2,4,8,6 now cycle
+	9 -> 9,8,6     2,4,8,6 now cycle
+	to make them equal for each number,  suppose a = p + residual(p%10) + n*20,   (p + residual(p%10)) for all numbers must give same remainder that set carrying all remainders must hae size 1.
+
+### Apply Binary Search on Answer whenever you see "Minimize/Maximize X parameter" and "Search space is sorted" . Apply Binary Search on Search Space of X and try to calculate X value in helper function, and compare it with mid, always ask "Can given task be completed with given mid that satisfies X"
+
+### Whenever an inequality is given, always look HOW TO SIMPLIFY THE GIVEN INEQUALITY?
+
+### If there is 2D Matrix question, and you have to make use of Manhattan distance between two points, ALWAYS REMEMBER MANHATTAN DISTANCE BETWEEN ANY PAIR OF POINTS IS ALWAYS INDEPENDANT OF MANHATTAN DISTANCE BETWEEN OTHER PAIR OF POINTS. ALWAYS SEPARATE COORDINDATES TO X AND Y AND HANDLE DISTANCE OF X AND Y SEPARATELY.
+
+### Always remember, if an array is given consisting of houses and gaps and you have to shift the house 1 unit left or right at a time to ultimately obtain largest gap and return minimum moves, ALWAYS REMEMBER MIDDLE HOUSE WILL NEVER MOVE.
+
+### If we have to apply DP ON DIVISORS OF A NUMBER , ALWAYS REMEMBER FINDING DIVISORS OF ALL NUMBERS UPTO N COSTS ONLY O(NLOGN) , USE THIS WHILE DESIGNING DP TRANSITIONS
+
+### WHENEVER AN ALGERBRAIC EQUATION RELATING ARRAY ELEMENTS WITH THEIR INDICES IS GIVEN, ALWAYS SIMPLIFY THAT GIVEN EQUATION
+	
     
 
     
