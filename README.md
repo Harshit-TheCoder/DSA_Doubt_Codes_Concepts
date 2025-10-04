@@ -91,34 +91,90 @@
     Start from top to bottom.
     At each level count height of histograms and count the rectangles using monotonic stack
 
-### If there is a question, which has an array [ (l1, r1), (l2, r2) .... (ln ,rn) ] that is dealing with segments, always try focussing on intersection of segments and make use of difference array or difference map to handle segments effectively
+## 1. Segment Problems
+- When given an array of segments `[(l1, r1), (l2, r2), ... (ln, rn)]`,  
+  **focus on their intersections**.
+- Use a **difference array** or **difference map** to handle updates and queries over segments effectively.
 
-### If we have to deal with trailing zeroes in a number, always think in power of 2's and 5's because number of trailing zeroes = Math.min(count(2), count(5)). If we have to multiply a given number of any number k <= m to maximise trailing zeroes, find out number of 2's and 5's in that number and multiply both that count(2) = count(5) equal in input number. then multiply by 10 till k*10 > m and then multiply m/k to maximize input.
+---
 
-### to make [p,q,r,s,t,u,v,w] -> [a,a,a,a,a,a,a,a] by adding remainder of number % 10, 
-	0 -> 0
-	1 -> 1,        2,4,8,6 now cycle
-	2 ->           2,4,8,6 now cycle
-	3 -> 3,6,      2,4,8,6 now cycle
-	4 -> 4,8,6,    2,4,8,6 now cycle
-	5 -> 5,0
-	6 -> 6,        2,4,8,6 now cycle
-	7 -> 7,4,8,6,  2,4,8,6 now cycle
-	8 -> 8,6       2,4,8,6 now cycle
-	9 -> 9,8,6     2,4,8,6 now cycle
-	to make them equal for each number,  suppose a = p + residual(p%10) + n*20,   (p + residual(p%10)) for all numbers must give same remainder that set carrying all remainders must hae size 1.
+## 2. Trailing Zeroes in Numbers
+- Trailing zeroes are determined by factors of **2** and **5**:
+- If multiplying a number `k ≤ m` to maximize trailing zeroes:
+1. Count the factors of 2 and 5 in `k`.
+2. Balance them such that `count(2) = count(5)`.
+3. Multiply by 10 until `k * 10 > m`.
+4. Finally, maximize by multiplying with `m/k`.
 
-### Apply Binary Search on Answer whenever you see "Minimize/Maximize X parameter" and "Search space is sorted" . Apply Binary Search on Search Space of X and try to calculate X value in helper function, and compare it with mid, always ask "Can given task be completed with given mid that satisfies X"
+---
 
-### Whenever an inequality is given, always look HOW TO SIMPLIFY THE GIVEN INEQUALITY?
+## 3. Making Numbers Equal by Adding Residuals
+Transform `[p, q, r, s, t, u, v, w] → [a, a, a, a, a, a, a, a]`  
+using remainder patterns of `x % 10`:
 
-### If there is 2D Matrix question, and you have to make use of Manhattan distance between two points, ALWAYS REMEMBER MANHATTAN DISTANCE BETWEEN ANY PAIR OF POINTS IS ALWAYS INDEPENDANT OF MANHATTAN DISTANCE BETWEEN OTHER PAIR OF POINTS. ALWAYS SEPARATE COORDINDATES TO X AND Y AND HANDLE DISTANCE OF X AND Y SEPARATELY.
+- **Cycles of residuals:**
+- `0 → 0`
+- `1 → 1, 2,4,8,6 ... cycle`
+- `2 → 2,4,8,6 ... cycle`
+- `3 → 3,6, 2,4,8,6 ... cycle`
+- `4 → 4,8,6, 2,4,8,6 ... cycle`
+- `5 → 5,0`
+- `6 → 6, 2,4,8,6 ... cycle`
+- `7 → 7,4,8,6, 2,4,8,6 ... cycle`
+- `8 → 8,6, 2,4,8,6 ... cycle`
+- `9 → 9,8,6, 2,4,8,6 ... cycle`
 
-### Always remember, if an array is given consisting of houses and gaps and you have to shift the house 1 unit left or right at a time to ultimately obtain largest gap and return minimum moves, ALWAYS REMEMBER MIDDLE HOUSE WILL NEVER MOVE.
+- To make all equal:
+  Ensure `(p + residual(p % 10))` for all numbers gives the **same remainder**.  
+The set of remainders must have **size 1**.
 
-### If we have to apply DP ON DIVISORS OF A NUMBER , ALWAYS REMEMBER FINDING DIVISORS OF ALL NUMBERS UPTO N COSTS ONLY O(NLOGN) , USE THIS WHILE DESIGNING DP TRANSITIONS
+---
 
-### WHENEVER AN ALGERBRAIC EQUATION RELATING ARRAY ELEMENTS WITH THEIR INDICES IS GIVEN, ALWAYS SIMPLIFY THAT GIVEN EQUATION
+## 4. Binary Search on Answer
+- When the problem asks to **Minimize/Maximize X** and search space is **sorted**:
+1. Apply **Binary Search** on the answer.
+2. Use a helper function to check feasibility with `mid`.
+3. Ask: **"Can this task be completed with `mid` that satisfies X?"**
+
+---
+
+## 5. Inequalities
+- For inequality problems:  
+**Always try to simplify the given inequality first.**
+
+---
+
+## 6. Manhattan Distance in 2D Matrices
+- Key property:  
+**Manhattan distance between one pair is independent of others.**
+- Separate coordinates into **X and Y** and handle distances **independently**.
+
+---
+
+## 7. Shifting Houses Problem
+- For problems with houses and gaps:
+- Shifting each house left/right by 1 to maximize the largest gap.
+- **The middle house will never move.**
+
+---
+
+## 8. DP on Divisors
+- When applying DP transitions on divisors:
+- Finding divisors for all numbers up to `N` costs only:
+  ```
+  O(N log N)
+  ```
+- Use this to design efficient transitions.
+
+---
+
+## 9. Algebraic Equations
+- If given an algebraic relation between **array elements and indices**:  
+**Simplify the equation first** before applying further logic.
+
+---
+
+
 	
     
 
