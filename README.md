@@ -276,6 +276,33 @@ The set of remainders must have **size 1**.
 ## GRAPH PROBLEM TRICK
 - When we are asked to minimize distances, and edge weight is not given, ALWAYS PREFER BFS WITH DISTANCE PARAMETER IN QUEUE TO DIJKSTRA
 - In these problems if additional constraints are given **ADD EXTRA STATE IN VISITED ARRAY TO HANDLE THAT CONDITION**
+
+---
+## Palindrome Array Trick
+- An array [a1,a2,a3,a4,.... an] given . Choose a number 'x' such that[a1%x, a2%x, a3%x ..... an%x] forms palindrome array.
+- For this to work, find GCD(Ai , An-i-1) for all pairs for which Ai != An-i-1
+
+--- 
+## Palindrome Array Trick 2
+- In an array [a1, a2,a3 ,a4,.... an] given. Delete some or all occurences of exactly one element to make array palindrome.
+- To do this: find first pair where Ai != An-i-1. Answer is any one of these two elements.
+
+--- 
+## String Split Trick
+- To Split a string in such a way that sum of count of distinct characters in both is max, Trick -> Use HashMaps
+
+---
+
+## Array Segments Trick
+- An array is given [a1, a2,a3,..., an] with |v - ai| <= x, we have to choose minimum number of different v's to cover all elements, Hint -> -x <= v - ai <= x => ai - x <= v <= ai + x
+- Number of non overlapping segments is the answer
+
+---
+
+## GCD Trick
+- To partition an array [a1,a2,a3,...., an] into subsegments such that gcd of all subsegments is maximum, then ans = max(ans, gcd(prefix[i], sum - prefix[i]))
+- Optimal answer is array can be split into only 2 subsegments.
+- Note gcd(b1, b2, b3, ...., bn) <= gcd(b1 + b2, b3, ..., bn) because if b1 and b2 are multiples of gcd 'd' then b1 + b2 is also a multiple of 'd'
 	
     
 
