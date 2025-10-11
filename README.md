@@ -200,14 +200,14 @@ The set of remainders must have **size 1**.
 
 ---
 
-## 2D PLANE AND MANHATTAN DISTANCE
+## 2D Plane and Manhattan Distance
 - If points given in 2D plane, and we have to find group of points such that from all those points distance to all input point is minimum, then **FIND MEDIAN POINT AFTER SEPARATING X AND Y**
 - IF NUMBER OF POINTS ARE ODD THEN ONLY **1 MEDIAN POINT** ELSE **MEDIAN POINTS FORM A RECTANGLE**
 - FORMULA FOR IT IS : DX - DX1 + 1)*(DY2 - DY1 + 1)
 
 ---
 
-## FRACTION REDUCTION
+## Fraction Reduction
 - To reduce a fraction to its simplest form ALWAYS **SEPARATE NUMERATOR AND DENOMINATOR AND REDUCE THEM WITH GCD(NUMERATOR, DENOMINATOR)**
 
 ---
@@ -303,8 +303,59 @@ The set of remainders must have **size 1**.
 - To partition an array [a1,a2,a3,...., an] into subsegments such that gcd of all subsegments is maximum, then ans = max(ans, gcd(prefix[i], sum - prefix[i]))
 - Optimal answer is array can be split into only 2 subsegments.
 - Note gcd(b1, b2, b3, ...., bn) <= gcd(b1 + b2, b3, ..., bn) because if b1 and b2 are multiples of gcd 'd' then b1 + b2 is also a multiple of 'd'
+
+--- 
+
+### Sorting trick
+- In an array [a1, a2, a3,...., an] all are buildings with ai visit cost, to arrange buildings around headquarters in a way such that the cost is minimum,
+- Arrange the buildings in descending order of cost and keep on placing them around the headquarters
+
+---
+
+## Divisors Trick
+- To find a number with alteast 4 divisors and difference between each divisors is diff >= d, find two distinct prime numbers p and q where 1 <= p, q <= n
+- then numbers are 1, p, q, pq or 1, p, p^2, p^3
+
+---
+
+## Subsequence sum of an array trick
+- An array [a1, a2, a3...., an] is given having distinct numbers from 1 to n and size 'n'
+- Smallest sum with first 'k' numbers = (k*(k+1)) / 2
+- Largest sum with last 'k' numbers = k(2*n -k + 1) / 2
+- A subsequence with a sum anything between this lowest and highest sum is possible.
+
+---
+
+## Array XOR Trick
+- An array [a1, a2, a3...., an] is given.
+- We have to take any segment of elements [l, r] and then XOR all elements in the range and replace all elements with this XOR value
+- If n is even, only two operations required, [1, n], [1, n]
+- If n is odd, four operations required, [1, n], [2, n], [1, 2], [1, 2]
+
+---
+
+## GCD Trick
+- An array [a1, a2, a3...., an] of size 'n' is given.
+- It has elements from 1 to n forming a valid permutation
+- We have to choose a number 'k' such that swapping all 2 wrong element pairs at a distance 'k' , array is sorted
+- Solution: find ans = GCD(ans, arr[i] - (i+1))
+
+--- 
+
+## Maths Concept
+- If a number is formed by adding all previous elements of a subsequence, it is possible only if curr number <= sum of all previous elements (BY INDUCTION).
+
+---
+
+## Array Concept
+- An array [a1, a2, a3...., an] of size 'n' is given and a number 'x' is given
+- Operation is given remove two adjacent elements by their given sum
+- Min Sum -> Sum of ai/x Max sum -> (Sum of all elements)/x
 	
-    
+--- 
+
+
+	
 
     
     
