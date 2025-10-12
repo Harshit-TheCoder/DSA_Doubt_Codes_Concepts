@@ -354,6 +354,138 @@ The set of remainders must have **size 1**.
 	
 --- 
 
+## Longest Balanced Substring (a, b, c)
+
+## Problem:
+Find the length of the **longest balanced substring** of a string containing only `'a'`, `'b'`, `'c'`.  
+A substring is **balanced** if all **distinct characters** in it appear the **same number of times**.
+### Algorithm Summary:
+
+1. **Prefix counts:**  
+   - Maintain cumulative counts of `'a'`, `'b'`, and `'c'` at each index:
+     ```
+     a_i, b_i, c_i = counts in S[0..i-1]
+     ```
+
+2. **Key idea:**  
+   - A substring `S[i..j]` is balanced if the differences between counts are the same at both ends.  
+   - Use **differences** `(a-b, a-c)` as a key to identify balanced substrings.
+
+3. **Hash Map:**  
+   - Store the **first occurrence** of each key `(a-b, a-c)` in a map.  
+   - When the same key appears again at index `j`, the substring from **first occurrence + 1 to j** is balanced.
+
+4. **Update answer:**  
+   - Length of balanced substring = `current_index - first_index_of_key`.  
+   - Track the **maximum length** during the scan.
+
+5. **Return** the maximum length after processing the string.
+
+
+### Key Insight / Trick:
+- Using `(a-b, a-c)` **automatically handles all cases**:
+  1. Substrings with **all 3 characters**.  
+  2. Substrings with **2 characters**.  
+  3. Substrings with **1 character**.  
+- Only **one map** is enough; no need for multiple keys or maps.
+
+### Complexity:
+- **Time:** O(n)  
+- **Space:** O(n)
+
+---
+
+## Find Largest Perimeter of a Polygostatic void solve(FastScanner fs) {
+    static void solve(FastScanner fs){
+        int n= fs.nextInt();
+        long arr[] = new long[n];
+        for(int i=0;i<n;i++){
+            arr[i] = fs.nextLong();
+        }
+
+        if(n == 3){
+            if(arr[0] != arr[1] && arr[1] != arr[2] && arr[2] != arr[0]){
+                System.out.println(0);
+                return;
+            }
+            else{
+                long a = arr[0];
+                long b = arr[1];
+                long c = arr[2];
+                if(a == b && (a + b) > c) System.out.println(a + b + c);
+                else if(b == c && (b + c) > a) System.out.println(a + b + c);
+                else if(c == a && (c + a) > b) System.out.println(a + b + c);
+                else System.out.println(0);  
+                return;
+            }
+        }
+
+        TreeMap<Long, Integer> map = new TreeMap<>(Collections.reverseOrder());
+        for(long num: arr) map.put(num, map.getOrDefault(num, 0) + 1);
+
+        long p = 0L;
+        List<Long> list = new ArrayList<>();
+        int count = 0;
+        for(Map.Entry<Long, Integer> entry: map.entrySet()){
+            long k = entry.getKey();
+            int v = entry.getValue();
+            if(v >= 2){
+                if((v & 1) == 1){
+                    list.add(k);
+                    p += (v-1)*k; 
+                    count += (v-1);
+                }
+                else{
+                    count += v;
+                    p += v*k;
+                }
+            } 
+            else{
+                list.add(k);
+            }
+        }
+
+        if(p == 0){
+            System.out.println(0);
+            return;
+        }
+
+    
+        Collections.sort(list); // ascending
+        long ans = p;
+            // Case 2: single odd stick - pick the largest leftover < p
+        long bestSingle = -1;
+        int maxC = count;
+        for (long x : list) {
+            if (x < p){
+                bestSingle = Math.max(bestSingle, x);
+            } 
+        }
+        if (bestSingle != -1){
+            ans = Math.max(ans, p + bestSingle);
+            maxC = Math.max(maxC, count + 1);
+        } 
+
+            // Case 3: check consecutive leftover pairs (sorted ascending)
+        for (int i = 1; i < list.size(); i++) {
+            long a = list.get(i - 1);
+            long b = list.get(i); // b >= a
+            if (b - a < p) {
+                ans = Math.max(ans, p + a + b);
+                maxC = Math.max(maxC, count + 2);
+            }
+        }
+
+        if(maxC < 3){
+            System.out.println(0);
+            return;
+        }
+        else{
+            System.out.println(ans);
+            return;
+        }
+	}
+
 
 	
 
