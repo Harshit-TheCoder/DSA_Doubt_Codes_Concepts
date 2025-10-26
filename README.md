@@ -486,7 +486,14 @@ A substring is **balanced** if all **distinct characters** in it appear the **sa
         }
 	}
 
+-----
 
+## In any non decreasing array, number of distinct subarrays with sum mod k == 0 is when for any subarray [l.... r], prefix[l-1] % k == prefix[r] % k.
+
+---
+## In sliding window problems when it appears like you have to keep track of multiple previous indices, use Map of Map Data Structure.
+
+--
 	
 
     
