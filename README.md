@@ -494,6 +494,14 @@ A substring is **balanced** if all **distinct characters** in it appear the **sa
 ## In sliding window problems when it appears like you have to keep track of multiple previous indices, use Map of Map Data Structure.
 
 --
+
+## Every Prime number greater than 3 is of the form 6k +- 1
+
+----
+
+## For any number 1e18 there are atmost 20-25 prime factors
+
+---
 	
 
     
